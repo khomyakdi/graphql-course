@@ -6,9 +6,13 @@ const PORT = 4000;
 
 const app = express();
 
-app.use('/graphql', graphqlHTTP({
-  schema,
-}));
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
 
 app.listen(PORT, () => {
   console.log(`server is started on port ${PORT}`);

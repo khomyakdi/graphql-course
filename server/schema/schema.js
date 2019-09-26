@@ -1,19 +1,61 @@
 const graphql = require('graphql');
 
 const dummyBooks = [
-  { name: 'Lorem ipsum dolor 11111111', genre: 'Fantasy', id: '1' },
-  { name: 'Lorem ipsum dolor 22222222', genre: 'Fantasy', id: '2' },
-  { name: 'Lorem ipsum dolor 333333333', genre: 'Sci-Fi', id: '3' },
+  {
+    name: 'Lorem ipsum dolor 11111111',
+    genre: 'Fantasy',
+    id: '1',
+    authorId: '1',
+  },
+  {
+    name: 'Lorem ipsum dolor 22222222',
+    genre: 'Fantasy',
+    id: '2',
+    authorId: '1',
+  },
+  {
+    name: 'Lorem ipsum dolor 333333333',
+    genre: 'Sci-Fi',
+    id: '3',
+    authorId: '2',
+  },
 ];
 
-const { GraphQLObjectType, GraphQLString, GraphQLOSchema } = graphql;
+const dummyAuthors = [
+  { name: 'Patrick 1', age: 42, id: '1' },
+  { name: 'Patrick 2', age: 43, id: '2' },
+  { name: 'Patrick 3', age: 2, id: '3' },
+];
+
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLInt,
+} = graphql;
 
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent) {
+        return dummyAuthors.find(author => author.id === parent.authorId);
+      },
+    },
+  }),
+});
+
+const AuthorType = new GraphQLObjectType({
+  name: 'Author',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    age: { type: GraphQLInt },
   }),
 });
 
@@ -22,15 +64,25 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     book: {
       type: BookType,
-      args: { id: { type: GraphQLString } },
+      args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        const searchedBooks = dummyBooks.find(book => book.id === args.id);
-        return searchedBooks;
+        const searchedBook = dummyBooks.find(book => book.id === args.id);
+        return searchedBook;
+      },
+    },
+    author: {
+      type: AuthorType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        const searchedAuthor = dummyAuthors.find(
+          author => author.id === args.id
+        );
+        return searchedAuthor;
       },
     },
   },
 });
 
-module.exports = new GraphQLOSchema({
+module.exports = new GraphQLSchema({
   query: RootQuery,
 });
