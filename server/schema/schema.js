@@ -1,4 +1,6 @@
 const graphql = require('graphql');
+const Book = require('../models/book');
+const Author = require('../models/Author');
 
 const dummyBooks = [
   {
@@ -59,7 +61,7 @@ const AuthorType = new GraphQLObjectType({
     age: { type: GraphQLInt },
     books: {
       type: new GraphQLList(BookType),
-      resolve(parent, args){
+      resolve(parent, args) {
         return dummyBooks.filter(book => book.authorId === parent.id);
       },
     },
@@ -87,16 +89,16 @@ const RootQuery = new GraphQLObjectType({
         return searchedAuthor;
       },
     },
-    books:{
+    books: {
       type: new GraphQLList(BookType),
-      resolve(){
-          return dummyBooks;
+      resolve() {
+        return dummyBooks;
       },
     },
-    authors:{
+    authors: {
       type: new GraphQLList(AuthorType),
-      resolve(){
-          return dummyAuthors;
+      resolve() {
+        return dummyAuthors;
       },
     },
   },
