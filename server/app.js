@@ -4,11 +4,12 @@ const schema = require('./schema/schema');
 const mongoose = require('mongoose');
 
 const PORT = 4000;
-const MONGODB_CONNECTION_STRING = 'momongodb://localhost:27017/gql-ninja';
+const MONGODB_CONNECTION_STRING = 'mongodb://localhost:27017/gqlninja';
 
 const app = express();
 
-mongoose.connect(MONGODB_CONNECTION_STRING, () => {
+mongoose.connect(MONGODB_CONNECTION_STRING, err => {
+  if (err) console.error('error', err);
   console.log('connected');
 });
 
