@@ -14,17 +14,24 @@ const getBooksQuery = gql`
 
 const BookList = () => {
   const { loading, error, data } = useQuery(getBooksQuery);
-  useEffect(
-    () => {
-      console.log(data)
-    },
-    [data],
-  );
+  if (loading)
+    return <p>loading</p>
+
+  if (error) {
+    console.log(error);
+    return <p>error</p>
+  }
 
   return (
     <div>
       <ul id="book-list">
-        <li>book </li>
+        {
+          data && data.books.map(book => (
+            <li key={book.id}>
+              {book.name}
+            </li>
+          ))
+        }
       </ul>
     </div>
   );
