@@ -31,6 +31,9 @@ const AddBook = () => {
   }
 
   const submitBook = e => {
+    console.log(name,
+      genre,
+      authorId)
     addBook();
     e.preventDefault();
   };
@@ -47,7 +50,7 @@ const AddBook = () => {
       </div>
       <div className="field">
         <label>Author:</label>
-        <select onSelect={e => setAuthorId(e.target.value)} >
+        <select onChange={e => setAuthorId(e.target.value)}>
           {
             authorsData.data && authorsData.data.authors.map(author => (
               <option key={author.id} value={author.id}>{author.name}</option>
