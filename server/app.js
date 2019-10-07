@@ -2,6 +2,7 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const PORT = 4000;
 const MONGODB_CONNECTION_STRING = 'mongodb://localhost:27017/gqlninja';
@@ -12,12 +13,12 @@ mongoose.connect(MONGODB_CONNECTION_STRING, err => {
   if (err) console.error('error', err);
   console.log('connected');
 });
-
+app.use(cors());
 app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    graphiql: true
+    graphiql: true,
   })
 );
 
