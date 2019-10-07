@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const BookList = props => {
+const BookList = () => {
   return (
     <div>
       <ul id="book-list">
@@ -9,10 +8,6 @@ const BookList = props => {
       </ul>
     </div>
   );
-};
-
-BookList.propTypes = {
-
 };
 
 export default BookList;
